@@ -11,8 +11,10 @@
 .terraform/
 .vagrant/
 
-# SSH Keys
+# Keys folder and ssh keys
+keys/
 *.pem
+*.pem.pub
 
 # Backup files
 *.bak
