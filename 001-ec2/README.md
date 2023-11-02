@@ -10,6 +10,14 @@ $ make init #initializes project
 $ make keygen #generates ssh keys
 ```
 
+## Objectives
+- Using Terraform HCL, query default VPC
+- Create keypair for connecting to instance
+- Create security group for limiting inbound traffic
+- Associate keypair with instance
+- Associate security group with instance
+- Create instance in default VPC
+
 ## Quick Start
 ```console
 $ make apply #applies project
