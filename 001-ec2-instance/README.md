@@ -1,6 +1,9 @@
 # Provision an EC2 instance in AWS
 This project provisions an EC2 instance in AWS.
 
+## Introduction
+Amazon Elastic Compute Cloud (EC2) is a part of Amazon Web Services (AWS), that allows users to rent virtual computers on which to run their own applications. EC2 encourages scalable deployment of applications by providing a web service through which a user can boot an Amazon Machine Image (AMI) to configure a virtual machine, which Amazon calls an "instance", containing any software desired. A user can create, launch, and terminate server-instances as needed, paying by the second for active servers – hence the term "elastic". EC2 provides users with control over the geographical location of instances that allows for latency optimization and high levels of redundancy.
+
 ## Pre-Requisites
 ```console
 $ make init #initializes project
