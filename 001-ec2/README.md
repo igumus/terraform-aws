@@ -31,7 +31,7 @@ The AMI ID, zone, and type can all be set as variables. You can also set the nam
 
 ## Testing
 ```console
-$ ssh -i "./keys/tut001.pem"  <USER>@<PUBLIC-IP-OF-INSTANCE>
+$ ssh -i "./keys/tut001.pem"  ec2-user@<PUBLIC-IP-OF-INSTANCE>
 ```
 After connection established;
 - [x] `ssh connection` and `ingress rule` are verified.
