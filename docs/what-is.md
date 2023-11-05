@@ -1,5 +1,8 @@
 # Definitions 
 
+## What is Bastion Host ?
+A bastion host, also known as a jump box or a jump server, acts as a fortified gateway between external networks (e.g., the internet) and internal private networks (private subnets). While this isolation adds an extra layer of security, it can pose challenges when administrators or developers require remote access for maintenance, debugging, or troubleshooting purposes. This is where a bastion host comes into play, it serves as a secure and controlled access point, allowing authorized users to connect to resources within the private network from remote locations. By acting as a single entry point, the bastion host minimizes the exposure of your internal network, reducing the attack surface and strengthening the overall security posture
+
 ## What is EC2 ?
 Amazon Elastic Compute Cloud (EC2) is a part of Amazon Web Services (AWS), that allows users to rent virtual computers on which to run their own applications. EC2 encourages scalable deployment of applications by providing a web service through which a user can boot an Amazon Machine Image (AMI) to configure a virtual machine, which Amazon calls an "instance", containing any software desired. A user can create, launch, and terminate server-instances as needed, paying by the second for active servers – hence the term "elastic". EC2 provides users with control over the geographical location of instances that allows for latency optimization and high levels of redundancy.
 

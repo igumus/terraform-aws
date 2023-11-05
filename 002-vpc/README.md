@@ -14,6 +14,7 @@ $ make init #initializes project
 - Associate private route table with private subnets
 - Create an internet gateway
 - Create a NAT gateway with elastic IP
+- Create a bastion host to limit ssh connections
 
 ## Quick Start
 ```console
@@ -33,14 +34,26 @@ By default, this command above try to provision an instance with followings;
     - Creates a route table (`main-private-rtb`)
     - Adds `forward 0.0.0.0/0 to nat gateway` route to the route table 
     - Associates the route table with the private subnets
-- Creates 2 machine (one in public subnet, one in private subnet)
+- Creates 4 machine (two in public subnet, two in private subnet)
     -  AMI `Amazon Linux 2023 AMI` (with id `ami-01bc990364452ab3e`) 
     -  Type `t2.micro` 
     -  With generated `ssh keypair`
-    -  Member of a security group `allow_http_ssh` 
+    - Machine#1 (`bastion`):
+        - places in public subnet
+        - Has `allow_ssh` security group attached (accepts ssh connection from internet, connects only instances which has `allow_ssh_from_bastion` security group)
+    - Machine#2 (`machine-public`)
+        - places in public subnet
+        - Has `allow_http` and `allow_ssh_from_bastion` security groups attached
+    - Machine#3 (`machine-private`)
+        - places in private subnet
+        - Has only `allow_ssh_from_bastion` security group attached
+    - Machine#4 (`machine-private-no-bastion`)
+        - places in private subnet
+        - Has no `allow_ssh_from_bastion` security group attached
 
 ## Testing
 Machines;
+- `bastion`  : which runs inside public subnet.
 - `machine1` : which runs inside public subnet, has public ip, can access to internet.
 - `machine2` : which runs inside private subnet, has no public ip, no access to internet.
 
