@@ -53,26 +53,22 @@ By default, this command above try to provision an instance with followings;
 
 ## Testing
 Machines;
-- `bastion`  : which runs inside public subnet.
-- `machine1` : which runs inside public subnet, has public ip, can access to internet.
-- `machine2` : which runs inside private subnet, has no public ip, no access to internet.
+- `bastion`  : (`bastion`) which runs inside public subnet.
+- `machine1` : (`machine-public`)  which runs inside public subnet, has public ip, can access to internet.
+- `machine2` : (`machine-private`) which runs inside private subnet, has no public ip, no access to internet.
+- `machine3` : (`machine-private-no-bastion`) which runs inside private subnet, has no public ip, no access to internet, with no ssh allowed.
 
 ```console
-$ scp -i "./keys/tut002.pem" keys/tut002.pem ec2-user@<machine1-PUBLIC-IP>:~/
-$ ssh -i "./keys/tut002.pem"  ec2-user@<machine1-PUBLIC-IP>
+$ scp -i "./keys/tut002.pem" keys/tut002.pem ec2-user@<bastion-PUBLIC-IP>:~/
+$ ssh -i "./keys/tut002.pem"  ec2-user@<bastion-PUBLIC-IP>
 ```
-After connection established;
-- Scenario-1 (No Nat Gateway)
-    - [x] `ping google.com` should work
-    - [x] install `nginx` and make sure nginx is working. Browse `http://<machine1-PUBLIC-IP>` address 
-    - [x] ssh from `machine1` to `machine2` should work
-    - [x] `ping google.com` should not work in `machine2` 
-
-- Scenario-2 (With Nat Gateway)
-    - [x] `ping google.com` should work
-    - [x] install `nginx` and make sure nginx is working. Browse `http://<machine1-PUBLIC-IP>` address 
-    - [x] ssh from `machine1` to `machine2` should work
-    - [x] `ping google.com` should work in `machine2` 
+- [x] ssh to bastion host
+- [x] ssh to `machine1` from `bastion`
+- [x] install `nginx` and make sure nginx is working. Browse `http://<machine1-PUBLIC-IP>` address.
+- [x] try to ssh to other machines from `machine1` (cannot establish any connection)
+- [x] ssh to `machine2` from `bastion`
+- [x] try to ssh to other machines from `machine2` (cannot establish any connection)
+- [x] ssh to `machine3` from `bastion` (you cannot establish any connection to the machine. Because security group `allow_ssh_from_bastion` not attached to the machine)
 
 ## Notes
 You need to set environment variables `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY`.
