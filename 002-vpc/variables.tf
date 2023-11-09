@@ -25,6 +25,12 @@ variable "vpc_private_subnet_count" {
   default = 1
 }
 
+variable "instance_name_prefix" {
+  type        = string
+  default     = "machine"
+  description = "EC2 instance name prefix"
+}
+
 variable "instance_machine_ami" {
   type        = string
   default     = "ami-01bc990364452ab3e"
