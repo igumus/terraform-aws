@@ -22,6 +22,10 @@ Amazon Virtual Private Cloud (VPC) enables you to launch AWS resources into a vi
 ## What is Security Group ?
 A security group is a **virtual firewall** designed to protect AWS instances. It sits in front of designated instances and can be applied to **EC2**, **ELB (Elastic Load Balancing)** and **Amazon Relational Database Service**, among others. Security groups have distinctive rules for inbound and outbound traffic. The groups **allow all outbound traffic by default** and **deny any traffic not expressly allowed**. Security groups are also **stateful**, so all outbound traffic will be allowed back in. We can not block a specific IP address using security groups.
 
-
 ## What is Network Access Control List ? 
 Network ACL (Access Control List) is a **virtual firewall for subnets**. It **allows** all the inbound or outbound IPv4 traffic and here we create a type of custom network all or each custom network ACL **denies** all inbound and outbound traffic. They are **stateless** and require you to clearly and properly define rules for both inbound and outbound traffic; otherwise, you might have connection issues within your environment. Network ACLs **cover entire subnets** and provide wide net protection that can encompass lots of resources at the same time. **In which all subnet in VPC must be combined with network ACL one subnet -one network ACL at a time.** 
+
+## What is Application LoadBalancer ?
+The Application Load Balancer distributes incoming HTTP and HTTPS traffic across multiple targets such as Amazon EC2 instances, microservices, and containers, based on request attributes. When the load balancer receives a connection request, it evaluates the listener rules in priority order to determine which rule to apply, and if applicable, it selects a target from the target group for the rule action. 
+
+We can use an HTTPS listener to offload the work of TLS encryption and decryption to our load banacler. Healthy targets in one or more target groups receive traffic based on the load balancing algorithm, and the routing rules we specify in the listener.
