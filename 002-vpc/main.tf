@@ -2,6 +2,12 @@ data "aws_availability_zones" "available" {
   state = "available"
 }
 
+locals {
+  availability_zone_count = length(data.aws_availability_zones.available)
+  public_subnet_count     = var.vpc_public_subnet_count > local.availability_zone_count ? local.availability_zone_count : var.vpc_public_subnet_count
+  private_subnet_count    = var.vpc_private_subnet_count > local.availability_zone_count ? local.availability_zone_count : var.vpc_private_subnet_count
+}
+
 resource "aws_vpc" "main" {
   cidr_block           = var.vpc_cidr
   enable_dns_hostnames = true
@@ -21,15 +27,15 @@ resource "aws_internet_gateway" "igw" {
 }
 
 resource "aws_subnet" "public" {
-  for_each = var.vpc_subnets
+  count = local.public_subnet_count
 
   vpc_id                  = aws_vpc.main.id
-  cidr_block              = cidrsubnet(var.vpc_cidr, 8, each.value + 100)
-  availability_zone       = data.aws_availability_zones.available.names[each.value - 1]
+  cidr_block              = cidrsubnet(var.vpc_cidr, 8, count.index + 100)
+  availability_zone       = data.aws_availability_zones.available.names[count.index]
   map_public_ip_on_launch = true
 
   tags = {
-    Name   = "pub-${each.key}"
+    Name   = "pub-subnet-${count.index}"
     Tier   = "public"
     Parent = var.vpc_name
   }
@@ -44,7 +50,7 @@ resource "aws_route_table" "public" {
   }
 
   tags = {
-    Name   = "${var.vpc_name}-public-rtb"
+    Name   = "public-rtb"
     Tier   = "public"
     Parent = var.vpc_name
   }
@@ -53,8 +59,8 @@ resource "aws_route_table" "public" {
 resource "aws_route_table_association" "public" {
   depends_on     = [aws_subnet.public]
   route_table_id = aws_route_table.public.id
-  for_each       = aws_subnet.public
-  subnet_id      = each.value.id
+  count          = local.public_subnet_count
+  subnet_id      = aws_subnet.public[count.index].id
 }
 
 resource "aws_eip" "eip" {
@@ -67,7 +73,7 @@ resource "aws_eip" "eip" {
 
 resource "aws_nat_gateway" "ngw" {
   allocation_id = aws_eip.eip.id
-  subnet_id     = aws_subnet.public[var.vpc_primary_subnet_name].id
+  subnet_id     = aws_subnet.public[0].id
 
   tags = {
     Name = "main"
@@ -77,15 +83,15 @@ resource "aws_nat_gateway" "ngw" {
 }
 
 resource "aws_subnet" "private" {
-  for_each = var.vpc_subnets
+  count = local.private_subnet_count
 
   vpc_id                  = aws_vpc.main.id
-  cidr_block              = cidrsubnet(var.vpc_cidr, 8, each.value)
-  availability_zone       = data.aws_availability_zones.available.names[each.value - 1]
+  cidr_block              = cidrsubnet(var.vpc_cidr, 8, count.index)
+  availability_zone       = data.aws_availability_zones.available.names[count.index]
   map_public_ip_on_launch = false
 
   tags = {
-    Name   = "priv-${each.key}"
+    Name   = "priv-subnet-${count.index}"
     Tier   = "private"
     Parent = var.vpc_name
   }
@@ -109,6 +115,6 @@ resource "aws_route_table" "private" {
 resource "aws_route_table_association" "private" {
   depends_on     = [aws_subnet.private]
   route_table_id = aws_route_table.private.id
-  for_each       = aws_subnet.private
-  subnet_id      = each.value.id
+  count          = local.private_subnet_count
+  subnet_id      = aws_subnet.private[count.index].id
 }

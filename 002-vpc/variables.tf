@@ -17,30 +17,23 @@ variable "vpc_name" {
   description = "VPC name"
 }
 
-variable "vpc_subnets" {
-  description = "VPC subnets"
-  default = {
-    "subnet-1" = 1
-    "subnet-2" = 2
-    "subnet-3" = 3
-  }
+variable "vpc_public_subnet_count" {
+  default = 1
 }
 
-variable "vpc_primary_subnet_name" {
-  type        = string
-  default     = "subnet-1"
-  description = "VPC Primary subnet name"
+variable "vpc_private_subnet_count" {
+  default = 1
 }
 
 variable "instance_machine_ami" {
-  type = string
-  default = "ami-01bc990364452ab3e"
+  type        = string
+  default     = "ami-01bc990364452ab3e"
   description = "EC2 instance ami"
 }
 
 variable "instance_machine_type" {
-  type = string
-  default = "t2.micro"
+  type        = string
+  default     = "t2.micro"
   description = "EC2 instance machine type"
 }
 
@@ -51,7 +44,7 @@ variable "keypair_path" {
 }
 
 variable "keypair_name" {
-  type = string
+  type        = string
   description = "Keypair name"
-  default = "kp-machine"
+  default     = "kp-machine"
 }
