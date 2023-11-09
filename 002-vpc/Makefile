@@ -16,10 +16,10 @@ validate: format ## Validate TF Files
 	terraform validate
 
 apply: validate ## Run TF Project
-	terraform apply
+	terraform apply -auto-approve
 
 destroy: ## Destroy TF Project
-	terraform destroy
+	terraform destroy -auto-approve
 	@rm -rf ${DIR_KEY}
 
 keygen: ## Generate SSH keys
