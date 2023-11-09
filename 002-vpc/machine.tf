@@ -1,11 +1,11 @@
 resource "aws_key_pair" "machine" {
-  key_name   = "kp-machine"
+  key_name   = var.keypair_name
   public_key = file(var.keypair_path)
 }
 
 resource "aws_instance" "bastion" {
-  ami                    = "ami-01bc990364452ab3e"
-  instance_type          = "t2.micro"
+  ami                    = var.instance_machine_ami
+  instance_type          = var.instance_machine_type
   subnet_id              = aws_subnet.public[var.vpc_primary_subnet_name].id
   key_name               = aws_key_pair.machine.key_name
   vpc_security_group_ids = [aws_security_group.allow_ssh.id]
@@ -16,8 +16,8 @@ resource "aws_instance" "bastion" {
   }
 }
 resource "aws_instance" "public" {
-  ami                    = "ami-01bc990364452ab3e"
-  instance_type          = "t2.micro"
+  ami                    = var.instance_machine_ami
+  instance_type          = var.instance_machine_type
   subnet_id              = aws_subnet.public[var.vpc_primary_subnet_name].id
   key_name               = aws_key_pair.machine.key_name
   vpc_security_group_ids = [aws_security_group.allow_http.id, aws_security_group.allow_ssh_from_bastion.id]
@@ -29,8 +29,8 @@ resource "aws_instance" "public" {
 }
 
 resource "aws_instance" "private" {
-  ami                    = "ami-01bc990364452ab3e"
-  instance_type          = "t2.micro"
+  ami                    = var.instance_machine_ami
+  instance_type          = var.instance_machine_type
   subnet_id              = aws_subnet.private[var.vpc_primary_subnet_name].id
   key_name               = aws_key_pair.machine.key_name
   vpc_security_group_ids = [aws_security_group.allow_ssh_from_bastion.id]
@@ -42,8 +42,8 @@ resource "aws_instance" "private" {
 }
 
 resource "aws_instance" "private-no-bastion" {
-  ami                    = "ami-01bc990364452ab3e"
-  instance_type          = "t2.micro"
+  ami                    = var.instance_machine_ami 
+  instance_type          = var.instance_machine_type
   subnet_id              = aws_subnet.private[var.vpc_primary_subnet_name].id
   key_name               = aws_key_pair.machine.key_name
   vpc_security_group_ids = [aws_security_group.allow_http.id]

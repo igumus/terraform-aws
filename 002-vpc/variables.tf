@@ -1,25 +1,20 @@
 variable "aws_region" {
   type        = string
-  description = "AWS region"
   default     = "us-east-1"
+  description = "AWS region"
 }
 
-variable "keypair_path" {
-  type        = string
-  description = "Keypair path"
-  default     = "keys/tut002.pem.pub"
-}
 
 variable "vpc_cidr" {
   type        = string
-  description = "VPC CIDR block"
   default     = "10.0.0.0/16"
+  description = "VPC CIDR block"
 }
 
 variable "vpc_name" {
   type        = string
-  description = "VPC name"
   default     = "main"
+  description = "VPC name"
 }
 
 variable "vpc_subnets" {
@@ -33,6 +28,30 @@ variable "vpc_subnets" {
 
 variable "vpc_primary_subnet_name" {
   type        = string
-  description = "VPC Primary subnet name"
   default     = "subnet-1"
+  description = "VPC Primary subnet name"
+}
+
+variable "instance_machine_ami" {
+  type = string
+  default = "ami-01bc990364452ab3e"
+  description = "EC2 instance ami"
+}
+
+variable "instance_machine_type" {
+  type = string
+  default = "t2.micro"
+  description = "EC2 instance machine type"
+}
+
+variable "keypair_path" {
+  type        = string
+  description = "Keypair path"
+  default     = "keys/tut002.pem.pub"
+}
+
+variable "keypair_name" {
+  type = string
+  description = "Keypair name"
+  default = "kp-machine"
 }
